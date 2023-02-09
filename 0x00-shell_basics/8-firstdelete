@@ -1,1 +1,2 @@
-ls 8-firstdelete
+#!/bin/bash
+mv /tmp/betty /tmp/my_first directory
