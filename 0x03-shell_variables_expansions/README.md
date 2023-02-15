@@ -6,3 +6,4 @@ Add /action to the PATH. /action should be the last directory the shell looks in
 a script that lists all local variables and environment variables, and functions.
 Create a script that creates a new local variable
 a script that prints the result of the addition of 128 with the value stored in the environment variable TRUEKNOWLEDGE, followed by a new line.
+ a script that prints the result of POWER divided by DIVIDE, followed by a new line.
