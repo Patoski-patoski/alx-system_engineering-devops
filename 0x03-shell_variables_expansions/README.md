@@ -13,3 +13,4 @@ a script that prints the result of the addition of 128 with the value stored in 
  14. a script that converts a number from base 10 to base 16
  14. a script that encodes and decodes text using the rot13 encryption. Assume ASCII
  14. a script that prints every other line from the input, starting with the first line.
+ 17. adds the two numbers stored in the environment variables WATER and STIR and prints the result.
