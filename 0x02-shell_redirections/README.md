@@ -8,3 +8,4 @@ Display the number of lines that contain the pattern “bin” in the file /etc/
 Display all the lines in the file /etc/passwd that do not contain the pattern “bin”
 Display all lines of the file /etc/ssh/sshd_config starting with a letter.
 Display all lines of the file /etc/ssh/sshd_config starting with a letter.
+Create a script that removes all letters c and C from input
