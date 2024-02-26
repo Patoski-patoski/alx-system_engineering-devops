@@ -2,4 +2,5 @@
 
 # a Bash script that uses ssh to connect to your server using the private key ~/.ssh/school with the user ubuntu
 
-ssh -i ~/.ssh/school ubuntu@52.91.152.92
+server_ip="52.91.152.92"
+ssh -i ~/.ssh/school ubuntu@"$server_ip"
