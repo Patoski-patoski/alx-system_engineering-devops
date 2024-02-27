@@ -1,0 +1,8 @@
+# configuring client file
+# settings in lines starting with '#' are comments
+
+Host *
+#  HashKnownHosts yes
+#  Port 22
+  IdentityFile ~/.ssh/school
+  PasswordAuthentication yes
