@@ -5,4 +5,4 @@ Host *
 #  HashKnownHosts yes
 #  Port 22
   IdentityFile ~/.ssh/school
-  PasswordAuthentication yes
+  PasswordAuthentication no
