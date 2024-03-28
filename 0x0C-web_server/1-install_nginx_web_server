@@ -7,7 +7,16 @@ sudo apt-get update -y
 # Unstall Nginx
 sudo apt-get install -y nginx
 
-echo "Hello World!" | sudo tee /var/www/html/index > /dev/null
+# Configure Nginx to listen on port 80 and serve a "Hello World!" page
+echo "server {
+	listen 80;
+	listen[::]:80;
+	server_name _;
+
+	location / {
+		echo "Hello World!"
+	}
+}" > /etc/nginx/sites-available/default
 
 # Restart Nginx
 sudo service nginx restart
