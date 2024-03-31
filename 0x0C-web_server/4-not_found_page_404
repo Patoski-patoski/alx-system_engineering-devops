@@ -38,7 +38,7 @@ server {
 _EOL_
 
 string_404="\\\terror_page 404 /404.html;"
-sudo sed -i "10i $string_404" /etc/nginx/sites-available/default
+sudo sed -i "12i $string_404" /etc/nginx/sites-available/default
 
 if [ ! -e "/etc/nginx/sites-enabled/default" ]; then
 	sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
