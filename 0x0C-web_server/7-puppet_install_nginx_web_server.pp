@@ -15,7 +15,7 @@ file { '/var/www/html/index.html':
   ensure  => 'file',
   owner   => 'ubuntu',
   mode    => '0644',
-  content => 'Hello World!',
+  content => "Hello World!\n",
 }
 
 # Creating the 404 error page
