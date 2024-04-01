@@ -6,7 +6,7 @@
 # Update and Install the nginx server
 exec {'update and install nginx':
   command => 'sudo apt -y update ; sudo apt install -y nginx',
-  path    => '/usr/bin', 
+  path    => '/usr/bin',
   onlyif  => 'sudo /usr/bin/test ! -f /etc/nginx/',
 }
 
@@ -14,7 +14,7 @@ exec {'update and install nginx':
 file { '/var/www/html/index.html':
   ensure  => 'file',
   owner   => 'ubuntu',
-  mode    => '0755',
+  mode    => '0644',
   content => 'Hello World!',
 }
 
@@ -22,7 +22,7 @@ file { '/var/www/html/index.html':
 file { '/var/www/html/404.html':
   ensure  => 'file',
   owner   => 'ubuntu',
-  mode    => '0755',
+  mode    => '0644',
   content => "Ceci n'est pas une page\n",
 }
 
@@ -39,9 +39,12 @@ file { 'Create the server block':
 		root /var/www/html;
 		index index.html;
 		
-		location = /patoski {
+		location = /redirect_me {
 			return 301 https://github.com/patoski-patoski;
-			error_page 404 /404.html;
+		}
+		error_page 404 /404.html;
+		location = /404.html { 
+			internal;
 		}
 		location / {
 			try_files \$uri \$uri/ =404;
@@ -51,7 +54,13 @@ file { 'Create the server block':
 
 # Create a sym link
 exec { 'Creating a symbolic link':
-  command  => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
-  path     => 'usr/bin',
-  onlyif   => '/usr/bin/test ! -f /etc/nginx/sites-enabled/default',
+  command => 'sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled',
+  path    => 'usr/bin',
+  onlyif  => '/usr/bin/test ! -f /etc/nginx/sites-enabled/default',
+}
+
+# Restart nginx
+exec {'restart nginx':
+  command => 'sudo service nginx restart',
+  path    => ['/usr/bin', '/usr/sbin',],
 }
