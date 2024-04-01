@@ -13,7 +13,7 @@ fi
 sudo touch /var/www/html/index.html
 sudo chown -R "$USER":"$USER" /var/www/html/index.html
 echo "Hello World!" > /var/www/html/index.html
-echo "Ceci n'est pas une page" > /var/www/html/404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html ; echo " " >> /var/www/html/404.html
 
 if [ ! -e "/etc/nginx/sites-available/default_backup/" ]; then
 	sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default_backup
