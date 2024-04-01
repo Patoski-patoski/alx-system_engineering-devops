@@ -14,7 +14,10 @@ sudo touch /var/www/html/index.html
 sudo chown -R "$USER":"$USER" /var/www/html/index.html
 echo "Hello World!" > /var/www/html/index.html
 
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default_backup
+if [ ! -e "/etc/nginx/sites-available/default_backup/" ]; then
+	sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default_backup
+fi
+
 cat > /etc/nginx/sites-available/default << _EOL_
 server {
 listen 80 default_server;
