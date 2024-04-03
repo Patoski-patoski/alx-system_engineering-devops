@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Webstack(Apache2) Debugging to return a page containing "Hello Holberton"
+
+service apache2 restart
