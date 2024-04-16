@@ -5,7 +5,17 @@
 # IPv4 IPs
 #Write a Bash script that configures a server to the above requirements
 
-
+cat > /etc/nginx/sites-available/default << _EOL_
+server {
+listen 80 default_server;
+listen [::]:80 default_server;
+root /var/www/html;
+index.nginx-debian.html;
+location / {
+        try_files \$uri \$uri/ =404;
+}
+}
+_EOL_
 if [ ! -e "/etc/nginx/sites-enabled/default" ]; then
 	sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 fi
