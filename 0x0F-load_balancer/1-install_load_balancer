@@ -18,8 +18,8 @@ frontend http
 
 backend web_backend
 	balance roundrobin
-	server 248513-web-01 35.175.134.9:80 check
-	server 248513-web-02 35.153.33.206:80 check
+	server 305199-web-01 35.175.128.192:80 check
+        server 305199-web-02 54.88.205.156:80 check
 _EOL_
 
 sudo service haproxy restart
