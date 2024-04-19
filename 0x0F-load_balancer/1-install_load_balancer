@@ -56,13 +56,13 @@ defaults
         errorfile 504 /etc/haproxy/errors/504.http
 
 frontend patoski
-        bind *:8080
+        bind *:80
         default_backend my_servers
 
 backend my_servers
 	balance roundrobin
-        server web-01 35.175.128.192:8080
-        server web-02 54.88.205.156:8080
+        server 305199-web-01 35.175.128.192:80
+        server 305199-web-02 54.88.205.156:80
 
 _EOL_
 
