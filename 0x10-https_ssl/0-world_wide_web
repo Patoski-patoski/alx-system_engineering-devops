@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# a Bash script that will display information about subdomains
+
+dns_lookup()
+{
+	domain="$1"
+		subdomain="$2"
+		host_names=("www" "lb-01" "web-01" "web-02")
+
+		if [ -z "$domain" ]; then
+			printf" Usage: At least an argument (domain name) must be present\n"
+				return 1
+				fi
+
+				if [ -z "$subdomain" ]; then
+					for host_name in "${host_names[@]}"
+						do
+							IP=$(dig "$host_name.$domain" | grep -A1 'ANSWER SECTION:' | awk '/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]/ {print $5}')
+								record_type=$(dig "$host_name.$domain" | grep -A1 'ANSWER SECTION:' | awk '/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]/ {print $4}')
+
+								echo "The subdomain $host_name is a $record_type record and points to $IP"
+								done
+				else
+					IP=$(dig "$subdomain.$domain" | grep -A1 'ANSWER SECTION:' | awk '/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]/ {print $5}')
+						record_type=$(dig "$subdomain.$domain" | grep -A1 'ANSWER SECTION:' | awk '/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]/ {print $4}')        
+
+						echo "The subdomain $subdomain is a $record_type record and points to $IP"
+						return 0
+						fi
+}
+
+dns_lookup "$1" "$2"
