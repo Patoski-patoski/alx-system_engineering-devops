@@ -44,7 +44,7 @@ frontend patoski
         mode http
         bind :80
         bind :443 ssl crt /etc/haproxy/certs/www.patoski.tech.pem
-        #http-request redirect scheme https unless { ssl_fc }
+        http-request redirect scheme https unless { ssl_fc }
         default_backend my_servers
 
 backend my_servers
