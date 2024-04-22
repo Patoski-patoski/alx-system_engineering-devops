@@ -44,8 +44,6 @@ frontend patoski
         bind :80
         bind :443 ssl crt /etc/haproxy/certs/www.patoski.tech.pem
         http-request redirect scheme https code 301 unless { ssl_fc }
-        #option forwardfor
-        #http-request add-header X-Forwarded-Proto https if { ssl_fc }
         default_backend my_servers
 
 
