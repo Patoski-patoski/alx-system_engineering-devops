@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# write a Bash script that accepts one argument
+# the script should run the whoami command under the user passed as an argument
+# make sure to try your script by passing different users
+
+user_whoami()
+{
+	user="$1"
+	if [ -z "$user" ]; then
+		whoami
+	else
+		sudo -u "$user" whoami
+	fi
+}
+user_whoami "$1"
