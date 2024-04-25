@@ -1,2 +1,2 @@
-### **0x0F-Python - Object-relational mapping**
-**`Devops`** **`SSH`** **`Network`** `**SysAdmin**` `**Security**`
+### **0x0B- SSH**
+**`Devops`** **`SSH`** **`SysAdmin`** **`Security`**
