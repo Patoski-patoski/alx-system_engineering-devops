@@ -1,2 +1,2 @@
-### **0x0F-Python - Object-relational mapping**
-**`Devops`** **`Scipting`** **`SysAdmin`** **`Security`**
+### **0x12- Web stack debugging #2**
+**`Devops`** **`Scipting`** **`SysAdmin`** **`Debugging`**
