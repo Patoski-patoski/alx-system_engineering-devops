@@ -1,89 +1,19 @@
 #!/usr/bin/env bash
-# A Bash script that configures the container to fit the requirements:
-# - nginx must be running as the nginx user.
-# - nginx must be listening on all active IPs on port 8080.
+# Fixes a web server to run Nginx as user listening on all IPs on port 8080.
 
-# Function to create nginx user if it doesn't exist
-create_nginx_user() {
-    if ! id -u nginx &> /dev/null; then
-        # Create the 'nginx' user with a system user account, no home directory, and a disabled shell
-        sudo useradd -r -s /bin/false nginx
-        echo "User 'nginx' created successfully."
-    else
-        echo "User 'nginx' is present."
-    fi
-}
+# Modify Nginx configuration
+nginx_conf="/etc/nginx/nginx.conf"
+sed -i "s/#user www-data/user nginx/" "$nginx_conf"
 
-# Ensure nginx user exists
-create_nginx_user
+# Change the default HTTP port
+default_site_conf="/etc/nginx/sites-available/default"
+sed -i "s/80/8080/g" "$default_site_conf"
 
-# Set ownership of nginx directories
-sudo chown -R nginx:nginx /etc/nginx /var/log/nginx
-sudo mkdir -p /var/cache/nginx
-sudo chown -R nginx:nginx /var/cache/nginx
+# Set restrictive permissions on the nginx.conf file
+chmod 644 "$nginx_conf"
 
-# Configure nginx
-sudo tee /etc/nginx/nginx.conf > /dev/null << '_CONF_'
-user nginx;
-worker_processes auto;
-pid /run/nginx.pid;
-include /etc/nginx/modules-enabled/*.conf;
+# Stop Apache if it's running
+pkill apache2
 
-events {
-    worker_connections 768;
-    # multi_accept on;
-}
-
-http {
-    ##
-    # Basic Settings
-    ##
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
-
-    ##
-    # SSL Settings
-    ##
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
-    ssl_prefer_server_ciphers on;
-
-    ##
-    # Logging Settings
-    ##
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
-
-    ##
-    # Gzip Settings
-    ##
-    gzip on;
-
-    ##
-    # Virtual Host Configs
-    ##
-    include /etc/nginx/conf.d/*.conf;
-    include /etc/nginx/sites-enabled/*;
-}
-_CONF_
-
-# Configure default site
-sudo tee /etc/nginx/sites-available/default > /dev/null << '_SITE_'
-server {
-    listen 8080;
-    listen [::]:8080;
-    root /var/www/html;
-    index index.html;
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
-_SITE_
-
-# Restart nginx
-sudo service nginx restart
-
+# Start Nginx as the nginx user
+sudo -u nginx service nginx start
