@@ -1,122 +1,89 @@
 #!/usr/bin/env bash
-# a Bash script that configures the container to fit the requirements:
-# nginx must be running as nginx user
-# nginx must be listening on all active IPs on port 8080
+# A Bash script that configures the container to fit the requirements:
+# - nginx must be running as the nginx user.
+# - nginx must be listening on all active IPs on port 8080.
 
-if ! id -u nginx &> /dev/null; then
-    # Create the 'nginx' user with a system user account, no home directory, and a disabled shell
-    sudo useradd -r -s /bin/false nginx
-    echo "User 'nginx' created successfully."
-else
-  echo "User "nginx" is present"
-fi
+# Function to create nginx user if it doesn't exist
+create_nginx_user() {
+    if ! id -u nginx &> /dev/null; then
+        # Create the 'nginx' user with a system user account, no home directory, and a disabled shell
+        sudo useradd -r -s /bin/false nginx
+        echo "User 'nginx' created successfully."
+    else
+        echo "User 'nginx' is present."
+    fi
+}
 
-# the -r option creates a system user, which is suitable for running services.
-# the -s /bin/false option sets the shell to /bin/false, which prevents the nginx user from logging in.
+# Ensure nginx user exists
+create_nginx_user
 
-sudo chown -R nginx:nginx /etc/nginx
-sudo chown -R nginx:nginx /var/log/nginx
+# Set ownership of nginx directories
+sudo chown -R nginx:nginx /etc/nginx /var/log/nginx
 sudo mkdir -p /var/cache/nginx
 sudo chown -R nginx:nginx /var/cache/nginx
 
-sudo cat > /etc/nginx/nginx.conf << _EOL_
+# Configure nginx
+sudo tee /etc/nginx/nginx.conf > /dev/null << '_CONF_'
 user nginx;
 worker_processes auto;
 pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
-        worker_connections 768;
-        # multi_accept on;
+    worker_connections 768;
+    # multi_accept on;
 }
 
 http {
+    ##
+    # Basic Settings
+    ##
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
 
-        ##
-        # Basic Settings
-        ##
+    ##
+    # SSL Settings
+    ##
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+    ssl_prefer_server_ciphers on;
 
-        sendfile on;
-        tcp_nopush on;
-        tcp_nodelay on;
-        keepalive_timeout 65;
-        types_hash_max_size 2048;
-        # server_tokens off;
+    ##
+    # Logging Settings
+    ##
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
 
-        # server_names_hash_bucket_size 64;
-        # server_name_in_redirect off;
+    ##
+    # Gzip Settings
+    ##
+    gzip on;
 
-        include /etc/nginx/mime.types;
-        default_type application/octet-stream;
-
-        ##
-        # SSL Settings
-        ##
-
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
-        ssl_prefer_server_ciphers on;
-
-        ##
-        # Logging Settings
-        ##
-
-        access_log /var/log/nginx/access.log;
-        error_log /var/log/nginx/error.log;
-
-        ##
-        # Gzip Settings
-        ##
-
-        gzip on;
-
-        # gzip_vary on;
-        # gzip_proxied any;
-        # gzip_comp_level 6;
-        # gzip_buffers 16 8k;
-        # gzip_http_version 1.1;
-        # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-        ##
-        # Virtual Host Configs
-        ##
-
-        include /etc/nginx/conf.d/*.conf;
-        include /etc/nginx/sites-enabled/*;
+    ##
+    # Virtual Host Configs
+    ##
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
 }
+_CONF_
 
-
-#mail {
-#       # See sample authentication script at:
-#       # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
-# 
-#       # auth_http localhost/auth.php;
-#       # pop3_capabilities "TOP" "USER";
-#       # imap_capabilities "IMAP4rev1" "UIDPLUS";
-# 
-#       server {
-#               listen     localhost:110;
-#               protocol   pop3;
-#               proxy      on;
-#       }
-# 
-#       server {
-#               listen     localhost:143;
-#               protocol   imap;
-#               proxy      on;
-#       }
-#}
-_EOL_
-
-cat > /etc/nginx/sites-available/default << _EOL_
+# Configure default site
+sudo tee /etc/nginx/sites-available/default > /dev/null << '_SITE_'
 server {
-listen 8080;
-listen [::]:8080;
-root /var/www/html;
-index index.html;
-location / {
+    listen 8080;
+    listen [::]:8080;
+    root /var/www/html;
+    index index.html;
+    location / {
         try_files $uri $uri/ =404;
+    }
 }
-}
-_EOL_
+_SITE_
 
+# Restart nginx
 sudo service nginx restart
+
