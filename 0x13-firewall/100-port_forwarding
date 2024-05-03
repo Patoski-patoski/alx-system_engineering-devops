@@ -3,13 +3,13 @@
 
 
 # enable packet forwarding on your system
-mkdir -p /etc/ufw/sysctl.conf
+sudo touch /etc/ufw/sysctl.conf
 echo "net/ip4/ip-forward=1" | sudo tee -a /etc/ufw/sysctl.conf
 # this command enables IP forwarding for IPv4 traffic.
 
 
 # add a NAT rule to redirect traffic from one TCP port to another
-sed -i '$a\\n' /etc/ufw/before.rules
+sudo sed -i '$a\\n' /etc/ufw/before.rules
 echo "*nat
 :PREROUTING ACCEPT [0:0]
 -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80
