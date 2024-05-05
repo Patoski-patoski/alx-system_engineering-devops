@@ -22,8 +22,7 @@ year=$(date +"%Y")
 month=$(date +"%m")
 day=$(date +"%d")
 
-archive="$day-$month-$year.tar.tgz"
-echo $archive
+archive="$day-$month-$year.tar.gz"
 
 # The MySQL dump must contain all your MySQL databases
 mysqldump -u root -p"$password" --all-databases > backup.sql
@@ -31,5 +30,3 @@ echo "backup.sql"
 
 # MySQL dump file has to be compressed to a tar.gz archive
 tar -czf $archive backup.sql
-
-
