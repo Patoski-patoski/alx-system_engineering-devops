@@ -1,2 +1,2 @@
-### **0x13.  Firewall**
+### **0x13. Firewall**
 **`Devops`**  **`SysAdmin`** **`Security`**
