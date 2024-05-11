@@ -39,4 +39,4 @@ if __name__ == "__main__":
         employee_name, completed_tasks, total_tasks))
 
     for title in completed_task_titles:
-        print(f"\t {title}")
+        print(f"\t {title}\n")
