@@ -1,40 +1,40 @@
 #!/usr/bin/python3
-"""0-gather_data_from_an_API"""
 
 import requests
 from sys import argv
 
-url_users = f"https://jsonplaceholder.typicode.com/users"
-url_todo = f"https://jsonplaceholder.typicode.com/todos"
 
-employee_id = int(argv[1])
-TASKS_DONE = 0
-TOTAL_NUM_TASKS = 0
-TASK_TITLE = ""
+if __name__ == "__main__":
 
-users_resp = requests.get(url=url_users)
-todos_resp = requests.get(url=url_todo)
+    if len(argv) != 2:
+        print("Usage: python script.py <employee_id>")
+        exit(1)
 
-users = users_resp.json()
-todos = todos_resp.json()
+    employee_id = int(argv[1])
+    url_users = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    url_todos = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos/"
 
-save_id = ""
-employee_name = ""
-for user in users:
-    if user['id'] == employee_id:
-        employee_name = user['name']
-        break
+    employee_name = requests.get(url_users).json().get('name')
+    todos_resp = requests.get(url_todos).json()
 
-for todo in todos:
-    if todo['userId'] == employee_id:
-        TOTAL_NUM_TASKS += 1
-        if todo['completed'] is True:
-            TASKS_DONE += 1
+    if employee_name is None:
+        print(f"Employee with ID {employee_id} not found.")
+        exit(1)
+
+    total_tasks = 0
+    completed_tasks = 0
+    completed_task_titles = []
+
+    for todo in todos_resp:
+        if employee_id == todo.get('userId'):
+            total_tasks += 1
+            if todo.get('completed') is True:
+                completed_tasks += 1
+                completed_task_titles.append(todo.get('title'))
 
 
-print(f"{employee_name} is done with task ({TASKS_DONE}/{TOTAL_NUM_TASKS}):")
-
-for todo in todos:
-    if todo['completed'] is True and todo['userId'] is employee_id:
-        TASK_TITLE = todo['title']
-        print(f"\t{TASK_TITLE}")
+    print("{} is done with task ({}/{}):".format(
+        employee_name, completed_tasks, total_tasks))
+    
+    for title in completed_task_titles:
+        print(f"\t{title}")
