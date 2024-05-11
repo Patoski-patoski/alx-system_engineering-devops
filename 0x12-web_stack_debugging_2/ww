@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+# Check if the 'nginx' user exists
+if ! id -u nginx &> /dev/null; then
+    # Create the 'nginx' user with a system user account, no home directory, and a disabled shell
+    sudo useradd -r -s /bin/false nginx
+    echo "User 'nginx' created successfully."
+else
+    echo "User 'nginx' alreadyyyyy exists." > /dev/null
+fi
+
