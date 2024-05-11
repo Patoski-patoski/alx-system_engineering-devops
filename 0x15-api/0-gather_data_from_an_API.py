@@ -35,8 +35,8 @@ if __name__ == "__main__":
                 completed_tasks += 1
                 completed_task_titles.append(todo.get('title'))
 
-    print("{} is done with task ({}/{}):".format(
+    print("{} is done with task ({}/{}):\n".format(
         employee_name, completed_tasks, total_tasks))
 
     for title in completed_task_titles:
-        print(f"\t {title}\n")
+        print(f"\t {title}")
