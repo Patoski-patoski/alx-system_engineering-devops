@@ -1,26 +1,25 @@
 #!/usr/bin/python3
-"""A Python script that, for a given employee ID,
-export infomation about his/her TODO list progress data in the JSON format.
-"""
-if __name__ == '__main__':
+"""  Python script to export data in the JSON format """
+
+if __name__ == "__main__":
     import json
     import requests
-    import sys
+    from sys import argv
 
-    if len(sys.argv) != 2:
-        print(f'Usage: {sys.argv[0]} <user_id>', file=sys.stderr)
+    if len(argv) != 2:
+        print(f"Usage: python {argv[0]}  {argv[1]}")
         exit(1)
 
-    user_id = sys.argv[1]
-    url = f'https://jsonplaceholder.typicode.com/users/{user_id}'
-    name = requests.get(url).json().get('username')
+    user_id = argv[1]
+    users = f"https://jsonplaceholder.typicode.com/users/{user_id}"
+    todos = f"https://jsonplaceholder.typicode.com/users/{user_id}/todos/"
 
-    url = f'https://jsonplaceholder.typicode.com/users/{user_id}/todos'
-    tasks = requests.get(url).json()
+    main_name = requests.get(users).json().get('username')
+    todos_resp = requests.get(todos).json()
 
-    with open(f'{user_id}.json', 'w', encoding='utf-8') as jsonfile:
+    with open(f"{user_id}.json", 'w', encoding='utf-8') as json_file:
         json.dump({user_id: [{
-            'task': task.get('title'),
-            'completed': task.get('completed'),
-            'username': name
-        } for task in tasks]}, jsonfile, indent=2)
+            'task': todo.get('title'),
+            'completed': todo.get('completed'),
+            'username': main_name
+            } for todo in todos_resp]}, json_file)
