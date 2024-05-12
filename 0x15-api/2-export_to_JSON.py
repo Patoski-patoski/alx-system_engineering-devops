@@ -22,4 +22,4 @@ if __name__ == "__main__":
             'task': todo.get('title'),
             'completed': todo.get('completed'),
             'username': main_name
-            } for todo in todos_resp]}, json_file)
+            } for todo in todos_resp]}, json_file, indent=2)
