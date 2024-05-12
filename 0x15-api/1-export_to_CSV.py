@@ -1,20 +1,12 @@
 #!/usr/bin/python3
-"""  extend your Python script to export data in the CSV format """
-
-import csv
-import requests
-from sys import argv
-
-
-def write_to_csv(user_id, username, completed, title):
-    """Writes the formatted data to a CSV file"""
-    with open('USER_ID.csv', mode='a', newline='') as csvfile:
-        csvwriter = csv.writer(
-                csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-        csvwriter.writerow([str(user_id), username, str(completed), title])
-
+""" a Python script that, using this REST API, for a given employee ID, returns
+    information about his/her TODO list progress
+"""
 
 if __name__ == "__main__":
+    import csv
+    import requests
+    from sys import argv
 
     if len(argv) != 2:
         print("Usage: python script.py <user_id>")
@@ -24,17 +16,14 @@ if __name__ == "__main__":
     users = f"https://jsonplaceholder.typicode.com/users/{user_id}"
     todos = f"https://jsonplaceholder.typicode.com/users/{user_id}/todos/"
 
-    main_name = requests.get(users).json()
+    main_name = requests.get(users).json().get('username')
     todos_resp = requests.get(todos).json()
 
-    if main_name is None:
-        print(f"User with ID {user_id} not found.")
-        exit(1)
-
     for todo in todos_resp:
-        if user_id == todo.get('userId'):
+
+        with open(f'{argv[1]}.csv', 'a', encoding='utf-8') as csvfile:
+            csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
             completed = todo.get('completed')
             title = todo.get('title')
-            user_name = main_name.get('username')
             completed = todo.get('completed')
-            write_to_csv(user_id, user_name, completed, title)
+            csvwriter.writerow([user_id, main_name, completed, title])
