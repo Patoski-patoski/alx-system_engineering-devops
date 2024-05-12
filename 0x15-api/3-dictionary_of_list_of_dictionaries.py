@@ -2,8 +2,6 @@
 """A Python script that, for a given employee ID,
 export infomation about his/her TODO list progress data in the JSON format.
 """
-from urllib import response
-
 
 if __name__ == '__main__':
     import json
@@ -22,4 +20,4 @@ if __name__ == '__main__':
                 'task': task.get('title'),
                 'completed': task.get('completed'),
                 } for task in tasks]})
-        json.dump(dicts, jsonfile, indent=2)
+        json.dump(dicts, jsonfile)
