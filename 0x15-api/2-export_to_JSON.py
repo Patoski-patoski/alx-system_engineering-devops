@@ -17,7 +17,7 @@ if __name__ == "__main__":
     main_name = requests.get(users).json().get('username')
     todos_resp = requests.get(todos).json()
 
-    with open(f"{argv[1]}.json", mode='w', encoding='utf-8') as json_file:
+    with open(f"{user_id}.json", mode='w', encoding='utf-8') as json_file:
         json.dump({user_id: [{
             'task': todo.get('title'),
             'completed': todo.get('completed'),
