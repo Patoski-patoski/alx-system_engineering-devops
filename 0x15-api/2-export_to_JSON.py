@@ -23,4 +23,4 @@ if __name__ == '__main__':
             'task': task.get('title'),
             'completed': task.get('completed'),
             'username': name
-        } for task in tasks]}, jsonfile)
+        } for task in tasks]}, jsonfile, indent=2)
