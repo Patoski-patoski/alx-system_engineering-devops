@@ -2,12 +2,6 @@
 """ 1.top_ten module"""
 
 import requests
-import requests.auth
-
-CLIENT_ID = "ZHsHCcoQxH9mxjKajUXjYA"
-SECRET_KEY = "7KL3Fy26ayJojzjighyIg6OjNI3BMQ"
-
-auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
 
 
 def top_ten(subreddit):
@@ -17,8 +11,7 @@ def top_ten(subreddit):
 
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = {"User-Agent": "1-top_ten"}
-    response = requests.get(
-            url, headers=headers, allow_redirects=False, auth=auth)
+    response = requests.get(url, headers=headers, allow_redirects=False)
 
     if response.status_code == 200:
         data = response.json()
