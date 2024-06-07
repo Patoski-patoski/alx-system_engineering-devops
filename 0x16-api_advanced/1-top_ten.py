@@ -27,4 +27,4 @@ def top_ten(subreddit):
                 break
             print(child.get('data', {}).get('title'))
     else:
-        print(None)
+        print("None")
