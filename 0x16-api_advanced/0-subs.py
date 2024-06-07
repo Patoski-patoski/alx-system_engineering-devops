@@ -8,6 +8,7 @@ SECRET_KEY = "7KL3Fy26ayJojzjighyIg6OjNI3BMQ"
 
 auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
 
+
 def number_of_subscribers(subreddit):
     """ a function that queries the Reddit API and returns the number of
         subscribers (not active users, total subscribers) for a given
@@ -20,7 +21,9 @@ def number_of_subscribers(subreddit):
     headers = {'User-Agent': '0-subs.py'}
 
     # Make a GET request to the subreddit's info endpoint
-    response = requests.get(url, headers=headers, allow_redirects=False, auth=auth)
+    response = requests.get(
+            url, headers=headers, allow_redirects=False,
+            auth=auth)
 
     if response.status_code == 200:
         data = response.json()
