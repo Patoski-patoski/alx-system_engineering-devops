@@ -9,7 +9,6 @@ SECRET_KEY = "7KL3Fy26ayJojzjighyIg6OjNI3BMQ"
 
 auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
 
-
 def top_ten(subreddit):
     """  a function that queries the Reddit API and prints the titles of the
          first 10 hot posts listed for a given subreddit.
@@ -20,11 +19,17 @@ def top_ten(subreddit):
     response = requests.get(
             url, headers=headers, allow_redirects=False, auth=auth)
 
-    if response.status_code in [200, 302] and response.text.strip():
-        data = response.json()
-        for i, child in enumerate(data.get('data', {}).get('children', [])):
-            if i >= 10:
-                break
-            print(child.get('data', {}).get('title'))
-        return
+    if response.status_code == 200:
+        try:
+            data = response.json()
+            for i, child in enumerate(data.get('data', {}).get('children', [])):
+                if i >= 10:
+                    break
+                print(child.get('data', {}).get('title'))
+        except json.JSONDecodeError:
+            print(f"Error: Invalid JSON response from Reddit API for subreddit '{subreddit}'")
+    else:
+        print(None)
+
     return None
+
