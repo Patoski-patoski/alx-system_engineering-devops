@@ -9,6 +9,7 @@ SECRET_KEY = "7KL3Fy26ayJojzjighyIg6OjNI3BMQ"
 
 auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
 
+
 def top_ten(subreddit):
     """  a function that queries the Reddit API and prints the titles of the
          first 10 hot posts listed for a given subreddit.
