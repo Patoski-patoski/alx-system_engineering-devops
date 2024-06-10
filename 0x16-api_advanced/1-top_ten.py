@@ -13,11 +13,11 @@ def top_ten(subreddit):
     headers = {"User-Agent": "1-top_ten"}
     response = requests.get(url, headers=headers, allow_redirects=False)
 
-    if response.status_code in [200, 302] and response.text.strip():
+    if response.status_code == 200:
         data = response.json()
         for i, child in enumerate(data.get('data', {}).get('children', [])):
             if i >= 10:
                 break
             print(child.get('data', {}).get('title'))
-        return
-    return None
+    else:
+        print("None")
