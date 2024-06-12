@@ -49,6 +49,5 @@ frontend patoski
 
 backend my_servers
         balance roundrobin
-        server 305199-web-01 35.175.128.192:80 check
-        server 305199-web-02 54.88.205.156:80 check
-
+        server 305199-web-01 35.153.66.53:80
+        server 305199-web-02 34.207.227.35:80
