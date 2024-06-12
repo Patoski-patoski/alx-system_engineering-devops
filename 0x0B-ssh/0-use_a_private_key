@@ -4,7 +4,7 @@
 private_key="~/.ssh/school"
 
 # Set the server address
-server_address=35.175.128.192
+server_address=34.229.189.4
 
 # Set the username
 username="ubuntu"
