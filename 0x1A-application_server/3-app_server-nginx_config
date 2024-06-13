@@ -1,0 +1,20 @@
+# configure Nginx to serve your page from the route /airbnb-onepage/and
+# AirBnB_clone_v2/web_flask/6-number_odd_or_even
+
+server {
+        listen 80;
+        listen [::]:80 ;
+        server_name 35.153.66.53;
+        add_header X-Served-By $HOSTNAME;
+        location /airbnb-onepage/ {
+                include proxy_params;
+                proxy_pass http://127.0.0.1:5000/airbnb-onepage;
+        }
+        location ~ /airbnb-dynamic/number_odd_or_even/(\d+)$ {
+                include proxy_params;
+                proxy_pass http://127.0.0.1:5001/number_odd_or_even/$1;
+        }
+        location / {
+                try_files $uri $uri/ =404;
+         }
+}
